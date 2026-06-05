@@ -4,15 +4,15 @@ clear
 
 PANEL="/var/www/pterodactyl"
 
-USERCSS="https://raw.githubusercontent.com/YOURUSERNAME/aven-theme/main/user.css"
-ADMINCSS="https://raw.githubusercontent.com/YOURUSERNAME/aven-theme/main/admin.css"
+USERCSS="https://raw.githubusercontent.com/snapphespace-sketch/aventheme/main/user.css"
+ADMINCSS="https://raw.githubusercontent.com/snapphespace-sketch/aventheme/main/admin.css"
 
 echo "================================="
 echo "       AVEN THEME INSTALLER"
 echo "================================="
 
 if [ ! -d "$PANEL" ]; then
-echo "Pterodactyl not found!"
+echo "Pterodactyl panel not found!"
 exit 1
 fi
 
