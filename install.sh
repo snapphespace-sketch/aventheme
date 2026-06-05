@@ -11,6 +11,8 @@ echo "================================="
 echo "       AVEN THEME INSTALLER"
 echo "================================="
 
+# Check panel exists
+
 if [ ! -d "$PANEL" ]; then
 echo "Pterodactyl panel not found!"
 exit 1
@@ -23,13 +25,29 @@ echo "Downloading theme..."
 curl -L $USERCSS -o public/user.css
 curl -L $ADMINCSS -o public/admin.css
 
-echo "Injecting theme..."
+echo "Searching for layout files..."
 
-grep -q 'user.css' resources/views/layouts/base.blade.php || 
-sed -i '/</head>/i <link rel="stylesheet" href="\/user.css">' resources/views/layouts/base.blade.php
+LAYOUTS=$(find resources -type f -name "*.blade.php")
 
-grep -q 'admin.css' resources/views/layouts/admin.blade.php || 
-sed -i '/</head>/i <link rel="stylesheet" href="\/admin.css">' resources/views/layouts/admin.blade.php
+echo "Injecting CSS globally..."
+
+for file in $LAYOUTS
+do
+# USER CSS
+grep -q 'user.css' "$file" || 
+sed -i '/</head>/i <link rel="stylesheet" href="\/user.css">' "$file"
+
+```
+# ADMIN CSS
+grep -q 'admin.css' "$file" || \
+sed -i '/<\/head>/i <link rel="stylesheet" href="\/admin.css">' "$file"
+```
+
+done
+
+echo "Fixing permissions..."
+
+chown -R www-data:www-data /var/www/pterodactyl
 
 echo "Clearing cache..."
 
@@ -47,3 +65,4 @@ echo ""
 echo "================================="
 echo "    AVEN THEME INSTALLED!"
 echo "================================="
+
